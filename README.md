@@ -2,9 +2,9 @@
 
 Utilizado postgres, para configurar colocar em application.properties suas configurações 
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce;
-spring.datasource.username=postgres;
-spring.datasource.password=admin;
+'spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce
+spring.datasource.username=postgres
+spring.datasource.password=admin'
 
 E na classe DatabaseInitializer também é necessario
 
