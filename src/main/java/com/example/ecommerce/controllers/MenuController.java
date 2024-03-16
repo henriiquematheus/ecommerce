@@ -1,15 +1,16 @@
 package com.example.ecommerce.controllers;
 
+import lombok.Getter;
 import java.util.Scanner;
 
 public class MenuController {
 
+    @Getter
     private final Scanner scanner;
 
     public MenuController() {
         this.scanner = new Scanner(System.in);
     }
-
     public int exibirMenu() {
         System.out.println("╔════════════════════════════╗");
         System.out.println("║       MENU DE OPÇÕES       ║");
