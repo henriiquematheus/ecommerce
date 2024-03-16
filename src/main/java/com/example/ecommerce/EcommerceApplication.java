@@ -19,7 +19,7 @@ public class EcommerceApplication {
 	}
 
 	public static void main(String[] args) {
-		DatabaseInitializer.main(args); // Chama o método main da classe DatabaseInitializer
+		DatabaseInitializer.main(args);
 
 		ConfigurableApplicationContext context = SpringApplication.run(EcommerceApplication.class, args);
 		EcommerceApplication application = context.getBean(EcommerceApplication.class);
