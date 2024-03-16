@@ -1,8 +1,10 @@
 package com.example.ecommerce.controllers;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
+@Component
 public class MenuController {
 
     @Getter
@@ -17,7 +19,9 @@ public class MenuController {
         System.out.println("╠════════════════════════════╣");
         System.out.println("║ 1. Adicionar um produto    ║");
         System.out.println("║ 2. Listar os produtos      ║");
-        System.out.println("║ 3. Sair                    ║");
+        System.out.println("║ 3. Atualizar um produto    ║"); // Opção adicionada
+        System.out.println("║ 4. Remover um produto      ║"); // Opção adicionada
+        System.out.println("║ 5. Sair                    ║"); // Opção atualizada
         System.out.println("╚════════════════════════════╝");
         System.out.println("╭───────────────────────────╮");
         System.out.println("│ Digite a opção desejada:  │");
@@ -35,4 +39,8 @@ public class MenuController {
     public Scanner getScanner() {
         return scanner;
     }
+    public void fecharScanner() {
+        scanner.close();
+    }
+
 }

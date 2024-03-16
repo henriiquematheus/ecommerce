@@ -1,7 +1,6 @@
 package com.example.ecommerce.controllers;
 
 import com.example.ecommerce.model.Produto;
-import com.example.ecommerce.controllers.MenuController;
 import com.example.ecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class ProdutoController {
 
     private final ProdutoService produtoService;
-    private final MenuController menuController;
+    private final MenuController menuController; // Adicionando o MenuController como uma dependência
 
     @Autowired
     public ProdutoController(ProdutoService produtoService, MenuController menuController) {
@@ -83,6 +82,28 @@ public class ProdutoController {
             System.out.println("Produto removido com sucesso!");
         } else {
             System.out.println("Produto não encontrado.");
+        }
+    }
+    public void processarOpcaoMenu(int opcao) {
+        switch (opcao) {
+            case 1:
+                adicionarProduto();
+                break;
+            case 2:
+                listarProdutos();
+                break;
+            case 3:
+                atualizarProduto();
+                break;
+            case 4:
+                removerProduto();
+                break;
+            case 5:
+                menuController.fecharScanner();
+                break;
+            default:
+                System.out.println("Opção inválida!");
+                break;
         }
     }
 }
