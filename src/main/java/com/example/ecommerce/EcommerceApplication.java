@@ -31,7 +31,7 @@ public class EcommerceApplication {
 		this.menuController = menuController;
 		this.scanner = menuController.getScanner();
 	}
-
+//
 	public static void main(String[] args) {
 		DatabaseInitializer.main(args);
 
