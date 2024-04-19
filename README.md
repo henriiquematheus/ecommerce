@@ -1,8 +1,17 @@
+`http://localhost:8080/api/produtos`
 
+JSON POST
+
+`
+{
+"nome": "Produto Teste",
+"preco": 10.99
+}
+`
 
 Utilizado postgres, para configurar colocar em application.properties suas configurações 
 
-`spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce`
+`spring.datasource.url=jdbc:poshttp://localhost:8080/api/produtostgresql://localhost:5432/ecommerce`
 
 `spring.datasource.username=postgres`
 
