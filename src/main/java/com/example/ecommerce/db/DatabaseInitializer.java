@@ -23,18 +23,30 @@ public class DatabaseInitializer {
                 System.out.println("O banco de dados 'ecommerce' já existe. Nenhuma ação adicional necessária.");
             }
         } catch (SQLException e) {
-            if (!e.getSQLState().equals("42P04")) {
+            if (e.getSQLState().equals("42P04")) {
+                System.out.println("O banco de dados 'ecommerce' já existe. Nenhuma ação adicional necessária.");
+            } else {
                 System.out.println("Erro ao criar o banco de dados: " + e.getMessage());
             }
+        } finally {
+            System.out.println("Tentativa de conexão com o banco de dados concluída.");
         }
     }
     private static boolean databaseExists(Connection connection, String databaseName) throws SQLException {
-        ResultSet resultSet = connection.getMetaData().getCatalogs();
-        while (resultSet.next()) {
-            if (databaseName.equals(resultSet.getString(1))) {
-                return true;
+        try (ResultSet resultSet = connection.getMetaData().getCatalogs()) {
+            while (resultSet.next()) {
+                String existingDatabaseName = resultSet.getString(1);
+                System.out.println("Verificando o banco de dados existente: " + existingDatabaseName);
+                if (databaseName.equals(existingDatabaseName)) {
+                    System.out.println("Banco de dados '" + databaseName + "' encontrado.");
+                    return true;
+                }
             }
+            System.out.println("Banco de dados '" + databaseName + "' não encontrado.");
+            return false;
+        } catch (SQLException e) {
+            System.out.println("Erro ao verificar se o banco de dados existe: " + e.getMessage());
+            throw e;
         }
-        return false;
     }
 }

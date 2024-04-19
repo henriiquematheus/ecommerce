@@ -3,107 +3,55 @@ package com.example.ecommerce.controllers;
 import com.example.ecommerce.model.Produto;
 import com.example.ecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/api/produtos")
 public class ProdutoController {
 
     private final ProdutoService produtoService;
-    private final MenuController menuController; // Adicionando o MenuController como uma dependência
 
     @Autowired
-    public ProdutoController(ProdutoService produtoService, MenuController menuController) {
+    public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
-        this.menuController = menuController;
     }
 
-    public void adicionarProduto() {
-        System.out.println("Digite o nome do produto:");
-        String nome = menuController.getScanner().nextLine();
-        System.out.println("Digite o preço do produto:");
-        BigDecimal preco = menuController.getScanner().nextBigDecimal();
-        menuController.getScanner().nextLine(); // Limpa o buffer do scanner
-
-        Produto produto = new Produto();
-        produto.setNome(nome);
-        produto.setPreco(preco);
-
-        produtoService.adicionarProduto(produto);
-
-        System.out.println("Produto adicionado com sucesso!");
+    @PostMapping
+    public ResponseEntity<Produto> adicionarProduto(@RequestBody Produto produto) {
+        Produto novoProduto = produtoService.adicionarProduto(produto);
+        return new ResponseEntity<>(novoProduto, HttpStatus.CREATED);
     }
 
-    public void listarProdutos() {
+    @GetMapping
+    public ResponseEntity<List<Produto>> listarProdutos() {
         List<Produto> produtos = produtoService.listarProdutos();
-        if (!produtos.isEmpty()) {
-            System.out.println("Lista de Produtos:");
-            produtos.forEach(System.out::println);
+        return ResponseEntity.ok(produtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> obterProduto(@PathVariable Long id) {
+        Produto produto = produtoService.obterProduto(id)
+                .orElse(null);
+        if (produto != null) {
+            return ResponseEntity.ok(produto);
         } else {
-            System.out.println("Não há produtos cadastrados.");
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public void atualizarProduto() {
-        System.out.println("Digite o ID do produto que deseja atualizar:");
-        long id = menuController.getScanner().nextLong();
-        menuController.getScanner().nextLine(); // Limpa o buffer do scanner
-
-        Optional<Produto> optionalProduto = produtoService.obterProduto(id);
-        if (optionalProduto.isPresent()) {
-            Produto produto = optionalProduto.get();
-            System.out.println("Digite o novo nome do produto:");
-            String novoNome = menuController.getScanner().nextLine();
-            System.out.println("Digite o novo preço do produto:");
-            BigDecimal novoPreco = menuController.getScanner().nextBigDecimal();
-            menuController.getScanner().nextLine(); // Limpa o buffer do scanner
-
-            produto.setNome(novoNome);
-            produto.setPreco(novoPreco);
-
-            produtoService.atualizarProduto(produto);
-
-            System.out.println("Produto atualizado com sucesso!");
-        } else {
-            System.out.println("Produto não encontrado.");
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @RequestBody Produto produto) {
+        Produto produtoAtualizado = produtoService.atualizarProduto(id, produto);
+        return ResponseEntity.ok(produtoAtualizado);
     }
 
-    public void removerProduto() {
-        System.out.println("Digite o ID do produto que deseja remover:");
-        long id = menuController.getScanner().nextLong();
-        menuController.getScanner().nextLine(); // Limpa o buffer do scanner
-
-        boolean removido = produtoService.removerProduto(id);
-        if (removido) {
-            System.out.println("Produto removido com sucesso!");
-        } else {
-            System.out.println("Produto não encontrado.");
-        }
-    }
-    public void processarOpcaoMenu(int opcao) {
-        switch (opcao) {
-            case 1:
-                adicionarProduto();
-                break;
-            case 2:
-                listarProdutos();
-                break;
-            case 3:
-                atualizarProduto();
-                break;
-            case 4:
-                removerProduto();
-                break;
-            case 5:
-                menuController.fecharScanner();
-                break;
-            default:
-                System.out.println("Opção inválida!");
-                break;
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removerProduto(@PathVariable Long id) {
+        produtoService.removerProduto(id);
+        return ResponseEntity.noContent().build();
     }
 }

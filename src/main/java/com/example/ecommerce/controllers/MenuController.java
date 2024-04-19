@@ -13,6 +13,7 @@ public class MenuController {
     public MenuController() {
         this.scanner = new Scanner(System.in);
     }
+
     public int exibirMenu() {
         System.out.println("╔════════════════════════════╗");
         System.out.println("║       MENU DE OPÇÕES       ║");
@@ -36,11 +37,7 @@ public class MenuController {
         return opcao;
     }
 
-    public Scanner getScanner() {
-        return scanner;
-    }
     public void fecharScanner() {
         scanner.close();
     }
-
 }
